@@ -79,7 +79,7 @@ def infer(dataset, llm, out_dir, tmp_folder_name='tmp', test_num = 1, batch_size
                 prediction = split_special_tokens(prediction)
                 data_ptr = batch_infer_ids[ptr]
                 dataset[data_ptr]['prediction'] = prediction
-                mmengine.dump(dataset[data_ptr], os.path.join(out_dir, tmp_folder_name, f'{data_ptr}.json'))
+                mmengine.dump(dataset[data_ptr], os.path.join(out_dir, tmp_folder_name, f'{data_ptr}.json'), ensure_ascii=False)
             batch_infer_ids = []; batch_infer_list = []
         
     # load results from cache
@@ -116,7 +116,7 @@ if __name__ == '__main__':
         print(f"Tested {tested_num} samples, left {test_num} samples, total {total_num} samples")
         prediction = infer(dataset, llm, args.out_dir, tmp_folder_name=tmp_folder_name, test_num=test_num, batch_size=args.batch_size)
         # dump prediction to out_dir
-        mmengine.dump(prediction, os.path.join(args.out_dir, args.out_name))
+        mmengine.dump(prediction, os.path.join(args.out_dir, args.out_name),ensure_ascii=False)
 
     if args.eval:
         if args.model_display_name == "":
@@ -149,4 +149,4 @@ if __name__ == '__main__':
         print(eval_results)
         results[args.eval + '_' + args.prompt_type] = eval_results
         print(f"Writing Evaluation Results to {json_path}")
-        mmengine.dump(results, json_path)
+        mmengine.dump(results, json_path,ensure_ascii=False)
